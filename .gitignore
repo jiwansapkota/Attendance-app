@@ -1,4 +1,5 @@
 /server/config/dbConfig.js
+server/package-lock.json
 # Miscellaneous
 *.class
 *.log
