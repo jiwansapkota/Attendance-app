@@ -1,4 +1,5 @@
 import 'package:attandanceregister/views/signIn.dart';
+import 'package:attandanceregister/views/signup.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -75,7 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignIn(),
+      home: SignUP(),
+      // SignIn(),
     );
   }
 }

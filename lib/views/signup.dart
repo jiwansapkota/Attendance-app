@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:attandanceregister/views/attandance.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +11,35 @@ class SignUP extends StatefulWidget {
 
 class _SignUPState extends State<SignUP> {
   bool isLoading = false;
+  final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController =
       new TextEditingController();
   TextEditingController passwordTextEditingController =
       new TextEditingController();
+  signMeIn() {
+    try {
+      if (formKey.currentState.validate()) {
+        const url = "http://localhost:3000/addUser";
+        var body = {
+          'name': emailTextEditingController,
+          "password": passwordTextEditingController,
+        };
+
+        // encode body to json and call the api to send data
+        // axios.post({url,()=>{json.encoder(body)}}});
+
+        //save user shared preference
+
+        //navigate to home page
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Attandance()));
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +58,7 @@ class _SignUPState extends State<SignUP> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Form(
-                        // key: formKey,
+                        key: formKey,
                         child: Column(children: [
                           TextFormField(
                             validator: (val) {
@@ -83,7 +111,7 @@ class _SignUPState extends State<SignUP> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // signMeIn();
+                          signMeIn();
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -96,8 +124,8 @@ class _SignUPState extends State<SignUP> {
                               ]),
                               borderRadius: BorderRadius.circular(30.0)),
                           child: Text(
-                            "Sign In",
-                            // style: mediumInputTextStyle(),
+                            "Sign Up",
+                            style: mediumInputTextStyle(),
                           ),
                         ),
                       ),
@@ -125,31 +153,32 @@ class _SignUPState extends State<SignUP> {
                       // SizedBox(
                       //   height: 16,
                       // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "don't have an account? ",
-                            style: inputTextStyle(),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUP()));
-                            },
-                            child: Text(
-                              "Register now ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Text(
+                      //       "don't have an account? ",
+                      //       style: inputTextStyle(),
+                      //     ),
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //         Navigator.pushReplacement(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //                 builder: (context) => SignUP()));
+                      //       },
+                      //       child: Text(
+                      //         "Register now ",
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 17,
+                      //           decoration: TextDecoration.underline,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+
                       SizedBox(
                         height: 50,
                       ),
