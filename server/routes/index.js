@@ -14,15 +14,10 @@ router.post('/dashboard',(req,res)=>{
 //@route POST /adduser
  router.post('/adduser',actions.addNew)
 
- router.post('/name',(req,res)=>{
-     console.log("api called")
-     console.log(req.body);
-     if(!(req.body.name==null)){
-     res.json({
-         success: true,
-         msg: "successfully created a post api"
-     })}
-
+ router.post('/new',(req,res)=>{
+     console.log("api called");
+     console.log("this is request body"+req.body);
+     res.json({msg:"successfully connected"})
  }) 
 
 module.exports = router  

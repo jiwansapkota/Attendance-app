@@ -11,7 +11,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  Key formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   bool isLoading = false;
   TextEditingController emailTextEditingController =
       new TextEditingController();
@@ -19,7 +19,7 @@ class _SignInState extends State<SignIn> {
       new TextEditingController();
 
   signMeIn() async {
-    if (true) {
+    if (formKey.currentState.validate()) {
       HelperFunctions.saveUserEmailSharedPreference(
           emailTextEditingController.text);
       setState(() {

@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:attandanceregister/helper/constants.dart';
 import 'package:attandanceregister/views/attandance.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class SignUP extends StatefulWidget {
   @override
@@ -16,27 +19,29 @@ class _SignUPState extends State<SignUP> {
       new TextEditingController();
   TextEditingController passwordTextEditingController =
       new TextEditingController();
-  signMeIn() {
-    try {
-      if (formKey.currentState.validate()) {
-        const url = "http://localhost:3000/addUser";
-        var body = {
-          'name': emailTextEditingController,
-          "password": passwordTextEditingController,
+  signMeIn() async {
+    final uri = "${Constants.ipAddress}/adduser";
+    if (formKey.currentState.validate()) {
+      try {
+        var requestBody = {
+          "email": emailTextEditingController.text,
+          "password": passwordTextEditingController.text
         };
-
-        // encode body to json and call the api to send data
-        // axios.post({url,()=>{json.encoder(body)}}});
-
-        //save user shared preference
-
-        //navigate to home page
+        http.Response response = await http.post(Uri.parse(uri),
+            headers: {"Content-Type": "application/json"},
+            body: json.encode(requestBody));
+        print(response.body.toString());
+        print("success-----------------------------------------");
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Attandance()));
+      } catch (err) {
+        print("error occurred ---------");
+        print(err);
       }
-    } catch (err) {
-      print(err);
+    } else {
+      print('validation failed');
+      return;
     }
   }
 
