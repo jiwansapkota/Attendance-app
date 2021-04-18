@@ -25,6 +25,8 @@ userSchema.pre('save', function (next) {
                     return next(err)
                 }
                 user.password = hash
+                console.log("email is :" ,user.email);
+                console.log("password is",user.password);
                 next()
 
             })
@@ -34,5 +36,14 @@ userSchema.pre('save', function (next) {
         return next()
     }
 })
+
+userSchema.methods.comparePassword= function (password, cb){
+    bcrypt.comparePassword(password,this.password,function(err,isMatch){
+        if(err){
+            return cb(err);
+        }
+        return cb(null,isMatch);    
+    })
+}
 
 module.exports = mangoose.model('User', userSchema)

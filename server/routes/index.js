@@ -13,6 +13,7 @@ router.post('/dashboard',(req,res)=>{
 //@desc adding new users
 //@route POST /adduser
  router.post('/adduser',actions.addNew)
+ router.post('/authenticate',actions.authnticate)
 
  router.post('/new',(req,res)=>{
      console.log("api called");
