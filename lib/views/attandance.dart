@@ -10,37 +10,37 @@ class Attandance extends StatefulWidget {
 }
 
 class _AttandanceState extends State<Attandance> {
-  var students; 
-  getStudents(String grade) async {
-    final uri = "${Constants.ipAddress}/adduser";
+  Map<String, dynamic> students;
+  Future<dynamic> getStudents(String grade) async {
+    final uri = "${Constants.ipAddress}/getstudents";
     var requestBody = {grade: grade};
     http.Response response = await http.post(Uri.parse(uri),
         headers: {"Content-Type": "application/json"},
         body: json.encode(requestBody));
-    var responseBody = jsonDecode(response.body);
-    if (responseBody) {
-      setState(() {
-        students = responseBody;
-      });
-    }
+    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    setState(() {
+      students = responseBody;
+    });
   }
 
   void initState() {
     super.initState();
+    getStudents("5");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("attendence register"),
-      ),
-      body: ListTile(
-        leading: FlutterLogo(size: 56.0),
-        title: Text('Two-line ListTile'),
-        subtitle: Text('Here is a second line'),
-        trailing: Icon(Icons.more_vert),
-      ),
-    );
+        appBar: AppBar(
+          title: Text("attendence register"),
+        ),
+        body: Center(
+          child: ListTile(
+            leading: FlutterLogo(size: 56.0),
+            title: Text('Two-line ListTile'),
+            subtitle: Text('Here is a second line'),
+            trailing: Icon(Icons.more_vert),
+          ),
+        ));
   }
 }

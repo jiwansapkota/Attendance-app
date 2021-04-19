@@ -1,9 +1,9 @@
 var User = require('../modals/user')
 var jwt = require('jwt-simple')
 var config = require('../config/dbConfig')
-const User = require('../modals/user')
-const Student = require('../modals/student')
-const dbConfig = require('../config/dbConfig')
+const user = require('../modals/user')
+const student = require('../modals/student')
+var passport = require('passport-jwt')
 
 var functions = {
     addNewUser: function (req, res) {
@@ -56,15 +56,16 @@ var functions = {
             else {
                 user.comparePassword(req.body.password, function (err, isMatch) {
                     if (isMatch && !(err)) {
-                        var token = jwt.encode(user, dbConfig.secret)
+                        var token = jwt.encode(user, config.secret)
                         res.json({
                             success: true,
+                            token:token,
                             msg: "User authenticated"
                         })
 
                     }
                     else {
-                        return res.status(403).send({
+                        return res.status(403).send({  
                             success: false,
                             msg: "Authentication Failed, Wrong Password"
 
@@ -77,12 +78,31 @@ var functions = {
 
 
     },
+    getUserInfo: function(req,res){
+        if(req.headers.authorization && req.headers.authorization.split('')[0]==='Bearer'){
+            var token = req.headers.authorization.split('')[1]
+            var decodedToken= jwt.decode(token,config.secret)
+            return res.json({
+                success:true,
+                token:decodedToken,
+                msg:"hello"+ decodedToken.email
+            })
+        }
+        else{
+            return res.json({
+                success:false,
+                msg: "no headers"
+            })
+        }
+
+    }
+    ,
     addNewStudent: function (req, res) {
         if (!req.body) {
             res.json({ success: false, msg: 'Enter all fields' })
         }
         else {
-            Student.findOne({
+            student.findOne({
                 name: req.body.name,
                 age: req.body.age,
             }, function (err, student) {

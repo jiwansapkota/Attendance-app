@@ -4,23 +4,18 @@ var Schema = mangoose.Schema
 
 var attandanceSchema = new Schema({
     attendence: {
-        takenBy: {
-            type: Object,
-            require: true
-        },
+        takenBy: [Schema.type.ObjectId],
         Date: {
             type: Date,
             require: true
         },
-        students: {
-            type: Object,
-            require: true
-        }
+        students:[Schema.types.ObjectId],           
+        
     }
 
 })
-attandanceSchema.pre('save',function(next){
-    next()
-})
+// attandanceSchema.pre('save',function(next){
+//     next()
+// })
 
 module.exports = mangoose.model('Attendence', attandanceSchema)

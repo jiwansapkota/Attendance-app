@@ -15,6 +15,8 @@ router.post('/dashboard',(req,res)=>{
  router.post('/adduser',actions.addNewUser)
  //@desc authenticating user 
  router.post('/authenticate',actions.authenticate)
+ //desc getting user
+ router.get('/getuserinfo',actions.getUserInfo)
  //desc adding students
  router.post('/addstudents',actions.addNewStudent)
  router.get('/getstudents',actions.getStudents)
