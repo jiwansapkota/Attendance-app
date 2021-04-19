@@ -12,13 +12,11 @@ router.post('/dashboard',(req,res)=>{
 
 //@desc adding new users
 //@route POST /adduser
- router.post('/adduser',actions.addNew)
- router.post('/authenticate',actions.authnticate)
-
- router.post('/new',(req,res)=>{
-     console.log("api called");
-     console.log("this is request body"+req.body);
-     res.json({msg:"successfully connected"})
- }) 
+ router.post('/adduser',actions.addNewUser)
+ //@desc authenticating user 
+ router.post('/authenticate',actions.authenticate)
+ //desc adding students
+ router.post('/addstudents',actions.addNewStudent)
+ router.get('/getstudents',actions.getStudents)
 
 module.exports = router  

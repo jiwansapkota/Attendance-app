@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:attandanceregister/helper/constants.dart';
 import 'package:attandanceregister/views/attandance.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
@@ -30,18 +29,21 @@ class _SignUPState extends State<SignUP> {
         http.Response response = await http.post(Uri.parse(uri),
             headers: {"Content-Type": "application/json"},
             body: json.encode(requestBody));
-        print(response.body.toString());
-        print("success-----------------------------------------");
-
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Attandance()));
+        var responseBody = jsonDecode(response.body);
+        if (responseBody.success) {
+          print(responseBody.success);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Attandance()));
+        } else {
+          print(responseBody.msg);
+        }
       } catch (err) {
         print("error occurred ---------");
         print(err);
       }
     } else {
       print('validation failed');
-      return;
+      return 0;
     }
   }
 
