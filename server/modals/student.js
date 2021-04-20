@@ -3,14 +3,22 @@ var Schema = mangoose.Schema
 
 
 var studentSchema = new Schema({
-        student:{
-            name:{ type:String, require:true},
-            age:{type:Number, require: true},
-            grade:{type:Number,require:true},
-        }
+    name: {
+        type: String,
+        require: true
+    },
+    age: {
+        type: Number,
+        min: 0, max: 120,
+        require: true
+    },
+    grade: {
+        type: Number,
+        require: true
+    },
 })
-// studentSchema.pre('save',function(next){
-//     next()
-// })
+studentSchema.pre('save',function(next){
+    next()
+})
 
-module.exports= mangoose.model('Student',studentSchema)
+module.exports = mangoose.model('Student', studentSchema)
