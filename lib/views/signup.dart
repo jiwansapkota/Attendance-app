@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:attandanceregister/helper/constants.dart';
-import 'package:attandanceregister/views/attandance.dart';
+import 'package:attandanceregister/views/signIn.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 
 class SignUP extends StatefulWidget {
   @override
@@ -15,10 +14,11 @@ class _SignUPState extends State<SignUP> {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController =
-      new TextEditingController();
+      new TextEditingController(text: "jiwan@gmail.com");
   TextEditingController passwordTextEditingController =
-      new TextEditingController();
+      new TextEditingController(text: "jiwan123");
   signMeIn() async {
+    print("signUP clicked");
     final uri = "${Constants.ipAddress}/adduser";
     if (formKey.currentState.validate()) {
       try {
@@ -30,10 +30,12 @@ class _SignUPState extends State<SignUP> {
             headers: {"Content-Type": "application/json"},
             body: json.encode(requestBody));
         var responseBody = jsonDecode(response.body);
-        if (responseBody.success) {
-          print(responseBody.success);
+        print(responseBody);
+        print(responseBody['msg']);
+        if (responseBody['success']) {
+          print(responseBody['success']);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Attandance()));
+              context, MaterialPageRoute(builder: (context) => SignIn()));
         } else {
           print(responseBody.msg);
         }

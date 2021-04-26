@@ -4,7 +4,7 @@ var Schema = mangoose.Schema
 
 var attandanceSchema = new Schema({
     attendence: {
-        takenBy: [Schema.type.ObjectId],
+        takenBy: [Schema.types.ObjectId],
         Date: {
             type: Date,
             require: true

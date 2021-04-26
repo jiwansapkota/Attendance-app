@@ -1,8 +1,8 @@
 var User = require('../modals/user')
 var jwt = require('jwt-simple')
 var config = require('../config/dbConfig')
-const user = require('../modals/user')
-const student = require('../modals/student')
+// const user = require('../modals/user')
+const Student = require('../modals/student')
 // var passport = require('passport-jwt')
 // var bcrypt = require('bcrypt')
 
@@ -26,6 +26,7 @@ var functions = {
                             email: req.body.email,
                             password: req.body.password
                         });
+                        console.log(newUser.email);
                         newUser.save(function (err, newUser) {
                             if (err) {
                                 res.json({ success: false, msg: 'failed to save' })
@@ -58,7 +59,10 @@ var functions = {
             else {
                 user.comparePassword(req.body.password, function (err, isMatch) {
                     if (isMatch && !(err)) {
-                        var token = jwt.encode(user, config.secret)
+                        var newUser = user
+                        delete newUser['password']
+                        console.log(newUser)
+                        var token = jwt.encode(newUser, config.secret)
                         res.json({
                             success: true,
                             token: token,
@@ -81,13 +85,14 @@ var functions = {
 
     },
     getUserInfo: function (req, res) {
+        console.log(req.headers);
         if (req.headers.authorization && req.headers.authorization.split(" ")[0] == 'Bearer') {
             var token = req.headers.authorization.split(" ")[1]
             var decodedToken = jwt.decode(token, config.secret)
             return res.json({
                 success: true,
                 token: decodedToken,
-                msg: "hello" + decodedToken.email
+                msg: "hello" + decodedToken.email,
             })
         }
         else {
@@ -109,13 +114,13 @@ var functions = {
         }
         else {
             console.log("name and grade not null ")
-            student.findOne({
+            Student.findOne({
                 name: req.body.name,
                 age: req.body.age,
             }, function (err, student) {
                 if (err) throw err
-                if (!user) {
-                    var newStudent = student({
+                if (!student) {
+                    var newStudent = Student({
                         name: req.body.name,
                         age: req.body.age,
                         grade: req.body.grade

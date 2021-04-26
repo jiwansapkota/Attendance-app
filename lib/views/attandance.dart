@@ -1,3 +1,4 @@
+import 'package:attandanceregister/helper/helperfunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:attandanceregister/helper/constants.dart';
@@ -30,17 +31,20 @@ class _AttandanceState extends State<Attandance> {
 
   @override
   Widget build(BuildContext context) {
+    var token = HelperFunctions.getSavedToken();
+    print(token);
     return Scaffold(
-        appBar: AppBar(
-          title: Text("attendence register"),
+      appBar: AppBar(
+        title: Text("attendence register"),
+      ),
+      body: Center(
+        child: ListTile(
+          leading: FlutterLogo(size: 56.0),
+          title: Text('Two-line ListTile'),
+          subtitle: Text('Here is a second line'),
+          trailing: Icon(Icons.more_vert),
         ),
-        body: Center(
-          child: ListTile(
-            leading: FlutterLogo(size: 56.0),
-            title: Text('Two-line ListTile'),
-            subtitle: Text('Here is a second line'),
-            trailing: Icon(Icons.more_vert),
-          ),
-        ));
+      ),
+    );
   }
 }

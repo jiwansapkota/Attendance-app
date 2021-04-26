@@ -1,9 +1,10 @@
-import 'package:attandanceregister/helper/helperfunctions.dart';
+import 'dart:convert';
+import 'package:attandanceregister/helper/constants.dart';
 import 'package:attandanceregister/helper/helperfunctions.dart';
 import 'package:attandanceregister/views/attandance.dart';
-import 'package:attandanceregister/views/signup.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   @override
@@ -11,22 +12,43 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final formKey = GlobalKey<FormState>();
   bool isLoading = false;
+  final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController =
-      new TextEditingController();
+      new TextEditingController(text: "jiwan@gmail.com");
   TextEditingController passwordTextEditingController =
-      new TextEditingController();
-
+      new TextEditingController(text: "jiwan123");
   signMeIn() async {
+    print("signIn clicked");
+    final uri = "${Constants.ipAddress}/authenticate";
     if (formKey.currentState.validate()) {
-      HelperFunctions.saveUserEmailSharedPreference(
-          emailTextEditingController.text);
-      setState(() {
-        isLoading = true;
-      });
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Attandance()));
+      try {
+        var requestBody = {
+          "email": emailTextEditingController.text,
+          "password": passwordTextEditingController.text
+        };
+        http.Response response = await http.post(Uri.parse(uri),
+            headers: {"Content-Type": "application/json"},
+            body: json.encode(requestBody));
+        var responseBody = jsonDecode(response.body);
+        print(responseBody['token']);
+        print(responseBody['msg']);
+        if (responseBody['success']) {
+          HelperFunctions.saveToken(responseBody['token']);
+          print(HelperFunctions.sharedPreferenceToken);
+          print(responseBody['success']);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Attandance()));
+        } else {
+          print(responseBody.msg);
+        }
+      } catch (err) {
+        print("error occurred ---------");
+        print(err);
+      }
+    } else {
+      print('validation failed');
+      return 0;
     }
   }
 
@@ -78,24 +100,6 @@ class _SignInState extends State<SignIn> {
                       SizedBox(
                         height: 16,
                       ),
-                      // Container(
-                      //   alignment: Alignment.centerRight,
-                      //   child: Container(
-                      //       padding: EdgeInsets.symmetric(
-                      //           vertical: 8, horizontal: 12),
-                      //       child: GestureDetector(
-                      //         onTap: () {
-                      //           // Navigator.push(
-                      //           //     context,
-                      //           //     MaterialPageRoute(
-                      //           //         builder: (context) => ResetPassword()));
-                      //         },
-                      //         child: Text(
-                      //           "forgot password?",
-                      //           style: inputTextStyle(),
-                      //         ),
-                      //       )),
-                      // ),
                       SizedBox(
                         height: 16,
                       ),
@@ -121,52 +125,6 @@ class _SignInState extends State<SignIn> {
                       ),
                       SizedBox(
                         height: 16,
-                      ),
-                      // GestureDetector(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     alignment: Alignment.center,
-                      //     width: MediaQuery.of(context).size.width,
-                      //     padding: EdgeInsets.symmetric(vertical: 20),
-                      //     decoration: BoxDecoration(
-                      //         color: Colors.white,
-                      //         borderRadius: BorderRadius.circular(30.0)),
-                      //     child: Text(
-                      //       "Sign In with Google",
-                      //       style: TextStyle(
-                      //         color: Colors.black87,
-                      //         fontSize: 18.0,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: 16,
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "don't have an account? ",
-                            style: inputTextStyle(),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUP()));
-                            },
-                            child: Text(
-                              "Register now ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       SizedBox(
                         height: 50,

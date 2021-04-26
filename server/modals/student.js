@@ -17,8 +17,8 @@ var studentSchema = new Schema({
         require: true
     },
 })
-studentSchema.pre('save',function(next){
-    next()
-})
+// studentSchema.pre('save',function(next){
+//     next()
+// })
 
 module.exports = mangoose.model('Student', studentSchema)
