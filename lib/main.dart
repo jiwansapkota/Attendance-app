@@ -72,7 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff1F1F1F),
+        // scaffoldBackgroundColor: Color(0xff1F1F1F),
+        scaffoldBackgroundColor: Colors.lightGreen,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

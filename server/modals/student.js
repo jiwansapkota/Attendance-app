@@ -7,6 +7,10 @@ var studentSchema = new Schema({
         type: String,
         require: true
     },
+    roll:{
+        type: Number,
+        require: true,
+    },
     age: {
         type: Number,
         min: 0, max: 120,

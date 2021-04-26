@@ -11,26 +11,34 @@ class Attandance extends StatefulWidget {
 }
 
 class _AttandanceState extends State<Attandance> {
-  Map<String, dynamic> students;
-  Future<dynamic> getStudents(String grade) async {
+  var students;
+  getStudents(int grade) async {
     final uri = "${Constants.ipAddress}/getstudents";
-    var requestBody = {grade: grade};
+    var requestBody = {"grade": grade};
     http.Response response = await http.post(Uri.parse(uri),
         headers: {"Content-Type": "application/json"},
         body: json.encode(requestBody));
-    Map<String, dynamic> responseBody = jsonDecode(response.body);
+    var responseBody = jsonDecode(response.body);
+    print('-------------------');
+    print(responseBody["students"]);
     setState(() {
-      students = responseBody;
+      students = [
+        ...responseBody['students'].map((value) {
+          value['isPresent'] = true;
+          return value;
+        })
+      ];
     });
   }
 
   void initState() {
     super.initState();
-    getStudents("5");
+    getStudents(16);
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(students);
     var token = HelperFunctions.getSavedToken();
     print(token);
     return Scaffold(
@@ -38,11 +46,34 @@ class _AttandanceState extends State<Attandance> {
         title: Text("attendence register"),
       ),
       body: Center(
-        child: ListTile(
-          leading: FlutterLogo(size: 56.0),
-          title: Text('Two-line ListTile'),
-          subtitle: Text('Here is a second line'),
-          trailing: Icon(Icons.more_vert),
+        child: Column(
+          children: [
+            ...students.map((value) {
+              print(value);
+              // return Text("sth");
+              return ListTile(
+                leading: FlutterLogo(size: 56.0),
+                title: Text(value['name']),
+                // subtitle: Text('student of grade: ' + value['grade']),
+                trailing: Switch(
+                  value: value['isPresent'],
+                  onChanged: (val) {
+                    print(val);
+                    var tempArr = students;
+                    print('sdhfsdf++++++++++++++++++++++++++++++++++++');
+                    print(value);
+                    var myIndex = students.indexOf(value);
+                    tempArr[myIndex]['isPresent'] = val;
+                    setState(() {
+                      students = tempArr;
+                    });
+                  },
+                  activeTrackColor: Colors.yellow,
+                  activeColor: Colors.orangeAccent,
+                ),
+              );
+            })
+          ],
         ),
       ),
     );

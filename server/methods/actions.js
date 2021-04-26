@@ -39,7 +39,7 @@ var functions = {
                     else {
                         res.json({
                             success: false,
-                            message: "User already exist for this email"
+                            msg: "User already exist for this email"
                         })
                     }
                 })
