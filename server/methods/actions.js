@@ -1,10 +1,8 @@
-var User = require('../modals/user')
 var jwt = require('jwt-simple')
 var config = require('../config/dbConfig')
-// const user = require('../modals/user')
-const Student = require('../modals/student')
-// var passport = require('passport-jwt')
-// var bcrypt = require('bcrypt')
+var User = require('../modals/user')
+var Student = require('../modals/student')
+var Attendance=require('../modals/attendance')
 
 var functions = {
     addNewUser: function (req, res) {
@@ -195,10 +193,23 @@ var functions = {
     },
     postAttendence: function(req,res){
         console.log(req.body);
+        if(req.body!=null){
+            Attendance(req.body).save(function (err, newUser) {
+                if (err) {
+                    res.json({ success: false, msg: 'failed to save' })
+                }
+                else {
+                    res.json({ success: true, msg: 'Successfully Saved' })
+                }
+            })
+        }
+       else{
         res.json({
-            success:true,
+            success:false,
             body:req.body,
+            msg:"empty request body"
         })
+       }
     }
 
 

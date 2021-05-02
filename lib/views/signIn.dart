@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:attandanceregister/helper/constants.dart';
 import 'package:attandanceregister/helper/helperfunctions.dart';
-import 'package:attandanceregister/views/attandance.dart';
+import 'package:attandanceregister/views/attendance.dart';
 import 'package:attandanceregister/views/signup.dart';
 import 'package:attandanceregister/widgets/widgets.dart';
 import 'package:flutter/material.dart';

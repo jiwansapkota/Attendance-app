@@ -11,7 +11,7 @@ class Attandance extends StatefulWidget {
 }
 
 class _AttandanceState extends State<Attandance> {
-  bool isLoading = false;
+  bool isLoading = true;
   var students;
   var decodedToken;
   getUserDetails() async {
@@ -53,11 +53,13 @@ class _AttandanceState extends State<Attandance> {
           return value;
         })
       ];
+      isLoading = false;
     });
   }
 
   onSubmitHandler() async {
     print("submit called");
+    print(students);
     print(decodedToken['email']);
     print(decodedToken);
     final uri = "${Constants.ipAddress}/postattendence";
@@ -85,63 +87,64 @@ class _AttandanceState extends State<Attandance> {
       appBar: AppBar(
         title: Text("attendence register"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            ...students.map((value) {
-              print(value);
-              // return Text("sth");
-              return ListTile(
-                leading: FlutterLogo(size: 56.0),
-                title: Text(value['name']),
-                // subtitle: Text('student of grade: ' + value['grade']),
-                trailing: Switch(
-                  value: value['isPresent'],
-                  onChanged: (val) {
-                    print(val);
-                    var tempArr = students;
-                    print('sdhfsdf++++++++++++++++++++++++++++++++++++');
+      body: isLoading
+          ? Container(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : Center(
+              child: Column(
+                children: [
+                  ...students.map((value) {
                     print(value);
-                    var myIndex = students.indexOf(value);
-                    tempArr[myIndex]['isPresent'] = val;
-                    setState(() {
-                      students = tempArr;
-                    });
-                  },
-                  activeTrackColor: Colors.yellow,
-                  activeColor: Colors.orangeAccent,
-                ),
-              );
-            }),
-            GestureDetector(
-              onTap: () {
-                onSubmitHandler();
+                    // return Text("sth");
+                    return ListTile(
+                      leading: FlutterLogo(size: 56.0),
+                      title: Text(value['name']),
+                      // subtitle: Text('student of grade: ' + value['grade']),
+                      trailing: Switch(
+                        value: value['isPresent'],
+                        onChanged: (val) {
+                          var tempArr = students;
+                          var myIndex = students.indexOf(value);
+                          tempArr[myIndex]['isPresent'] = val;
+                          setState(() {
+                            students = tempArr;
+                          });
+                        },
+                        activeTrackColor: Colors.yellow,
+                        activeColor: Colors.orangeAccent,
+                      ),
+                    );
+                  }),
+                  GestureDetector(
+                    onTap: () {
+                      onSubmitHandler();
 
-                // isLoading ? null : signMeIn();
-              },
-              child: Container(
-                margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                child: Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: isLoading
-                        ? BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(30.0),
-                          )
-                        : BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              const Color(0xff007EF4),
-                              const Color(0xff2A75BC),
-                            ]),
-                            borderRadius: BorderRadius.circular(30.0)),
-                    child: Text("Submit", style: mediumInputTextStyle())),
+                      // isLoading ? null : signMeIn();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          decoration: isLoading
+                              ? BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(30.0),
+                                )
+                              : BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    const Color(0xff007EF4),
+                                    const Color(0xff2A75BC),
+                                  ]),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                          child: Text("Submit", style: mediumInputTextStyle())),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

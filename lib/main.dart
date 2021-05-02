@@ -1,4 +1,4 @@
-import 'package:attandanceregister/views/attandance.dart';
+import 'package:attandanceregister/views/attendance.dart';
 import 'package:attandanceregister/views/signIn.dart';
 import 'package:attandanceregister/views/signup.dart';
 import 'package:flutter/material.dart';
