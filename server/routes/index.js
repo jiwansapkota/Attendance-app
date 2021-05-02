@@ -20,5 +20,8 @@ router.post('/dashboard',(req,res)=>{
  //desc adding students
  router.post('/addstudent',actions.addNewStudent)
  router.post('/getstudents',actions.getStudents)
+ router.post('/postattendence',actions.postAttendence)
+
+
 
 module.exports = router  

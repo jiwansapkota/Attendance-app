@@ -192,6 +192,13 @@ var functions = {
             })
         }
 
+    },
+    postAttendence: function(req,res){
+        console.log(req.body);
+        res.json({
+            success:true,
+            body:req.body,
+        })
     }
 
 

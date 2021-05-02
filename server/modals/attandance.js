@@ -2,16 +2,13 @@ var mangoose = require('mongoose')
 var Schema = mangoose.Schema
 
 
-var attandanceSchema = new Schema({
-    attendence: {
+var attandanceSchema = new Schema({  
         takenBy: [Schema.types.ObjectId],
-        Date: {
+        date: {
             type: Date,
             require: true
         },
-        students:[Schema.types.ObjectId],           
-        
-    }
+        students:[Schema.types.ObjectId],          
 
 })
 // attandanceSchema.pre('save',function(next){

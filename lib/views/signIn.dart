@@ -25,7 +25,6 @@ class _SignInState extends State<SignIn> {
     });
     print("signIn clicked");
     final uri = "${Constants.ipAddress}/authenticate";
-    print(formKey.currentState.validate());
     if (formKey.currentState.validate()) {
       try {
         var requestBody = {
@@ -40,13 +39,11 @@ class _SignInState extends State<SignIn> {
         print(responseBody['msg']);
         if (responseBody['success']) {
           HelperFunctions.saveToken(responseBody['token']);
-          print(HelperFunctions.sharedPreferenceToken);
-          print(responseBody['success']);
+          HelperFunctions.saveIsloggedStatus(true);
+          print('here is token ##############################################');
+          print(await HelperFunctions.getSavedToken());
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Attandance()));
-          setState(() {
-            isLoading = false;
-          });
         } else {
           setState(() {
             isLoading = false;
@@ -55,6 +52,10 @@ class _SignInState extends State<SignIn> {
       } catch (err) {
         print("error occurred ---------");
         print(err);
+        setState(() {
+          isLoading = false;
+        });
+      } finally {
         setState(() {
           isLoading = false;
         });
