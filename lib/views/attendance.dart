@@ -14,38 +14,35 @@ class _AttandanceState extends State<Attandance> {
   bool isLoading = true;
   var students;
   var decodedToken;
-  getUserDetails() async {
-    var token = await HelperFunctions.getSavedToken();
-    print("*******************************");
-    print(token);
-    final url = "${Constants.ipAddress}/getuserinfo";
-    http.Response response = await http.get(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json",
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-    );
-    var responseBody = jsonDecode(response.body);
-    print(responseBody['token']['email']);
-    setState(() {
-      decodedToken = responseBody['token'];
-    });
-    print("successfully decoded token");
-  }
+  // getUserDetails() async {
+  //   var token = await HelperFunctions.getSavedToken();
+  //   print("*******************************");
+  //   print(token);
+  //   final url = "${Constants.ipAddress}/getuserinfo";
+  //   http.Response response = await http.get(
+  //     Uri.parse(url),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token'
+  //     },
+  //   );
+  //   var responseBody = jsonDecode(response.body);
+  //   print(responseBody['token']['email']);
+  //   setState(() {
+  //     decodedToken = responseBody['token'];
+  //   });
+  //   print("successfully decoded token");
+  // }
 
   getStudents(int grade) async {
     print("getstudent called");
-    print(DateTime.now());
     final uri = "${Constants.ipAddress}/getstudents";
     var requestBody = {"grade": grade};
     http.Response response = await http.post(Uri.parse(uri),
         headers: {"Content-Type": "application/json"},
         body: json.encode(requestBody));
     var responseBody = jsonDecode(response.body);
-    print('-------------------');
-    print(responseBody["students"]);
     setState(() {
       students = [
         ...responseBody['students'].map((value) {
@@ -59,12 +56,12 @@ class _AttandanceState extends State<Attandance> {
 
   onSubmitHandler() async {
     print("submit called");
-    print(students);
-    print(decodedToken['email']);
-    print(decodedToken);
+    var takenBy = await HelperFunctions.getUserName();
+    print(takenBy);
     final uri = "${Constants.ipAddress}/postattendence";
     var requestBody = {
-      "takenBy": decodedToken['email'],
+      // "takenBy": decodedToken['email'],
+      "takenBy": takenBy,
       "date": DateTime.now().toString(),
       "students": students,
     };
@@ -78,7 +75,6 @@ class _AttandanceState extends State<Attandance> {
   void initState() {
     super.initState();
     getStudents(16);
-    getUserDetails();
   }
 
   @override

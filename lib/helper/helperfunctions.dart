@@ -16,10 +16,10 @@ class HelperFunctions {
     return prefs.setBool(sharedPreferenceUserLoggedInKey, isUserLoggedIn);
   }
 
-  // static Future<bool> saveUserName(String userName) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return await prefs.setString(sharedPreferenceToken, userName);
-  // }
+  static Future<bool> saveUserName(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(sharedPreferenceToken, userName);
+  }
 
   //getting data from shared_preferences
 
@@ -31,5 +31,10 @@ class HelperFunctions {
   static Future<bool> getUserLoggedInSharedPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(sharedPreferenceUserLoggedInKey);
+  }
+
+  static Future<String> getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(loggedInUserName);
   }
 }
